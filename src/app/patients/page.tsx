@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { Paciente } from '@/app/types'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function PacientesPage() {
   const [pacientes, setPacientes] = useState<Paciente[]>([])
@@ -16,7 +16,16 @@ export default function PacientesPage() {
     setCargando(false)
   }
 
-  useEffect(() => { cargar() }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      setCargando(true)
+      const res = await fetch('/api/patients')
+      const data = await res.json()
+      setPacientes(data)
+      setCargando(false)
+    }
+    fetchData()
+  }, [])
 
   const eliminar = async (id: string) => {
     if (!confirm('¿Eliminar paciente? Esta acción no se puede deshacer.')) return

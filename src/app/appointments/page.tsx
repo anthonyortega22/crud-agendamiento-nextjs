@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 interface Cita {
   id: string
@@ -22,15 +22,15 @@ export default function CitasPage() {
   const [citas, setCitas] = useState<Cita[]>([])
   const [cargando, setCargando] = useState(true)
 
-  const cargar = async () => {
-    setCargando(true)
-    const res = await fetch('/api/appointments')
-    const data = await res.json()
-    setCitas(data)
-    setCargando(false)
-  }
-
-  useEffect(() => { cargar() }, [])
+  useEffect(() => {
+    (async () => {
+      setCargando(true)
+      const res = await fetch('/api/appointments')
+      const data = await res.json()
+      setCitas(data)
+      setCargando(false)
+    })()
+  }, [])
 
   const eliminar = async (id: string) => {
     if (!confirm('¿Eliminar cita?')) return
@@ -100,7 +100,7 @@ export default function CitasPage() {
                       </td>
                       <td className="px-6 py-4 text-slate-600">{c.fecha}</td>
                       <td className="px-6 py-4 text-slate-600">{c.hora}</td>
-                      <td className="px-6 py-4 text-slate-600 max-w-[180px] truncate">{c.motivo}</td>
+                      <td className="px-6 py-4 text-slate-600 max-w-45 truncate">{c.motivo}</td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${estado.className}`}>
                           {estado.label}
