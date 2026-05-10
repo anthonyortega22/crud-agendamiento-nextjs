@@ -7,6 +7,8 @@ export interface Paciente {
   fechaNacimiento: string;
 }
 
+export type PacienteInput = Omit<Paciente, "id">;
+
 export type EstadoCita = "pendiente" | "confirmada" | "cancelada";
 
 export interface Cita {
@@ -18,5 +20,9 @@ export interface Cita {
   estado: EstadoCita;
 }
 
-export type PacienteInput = Omit<Paciente, "id">;
 export type CitaInput = Omit<Cita, "id">;
+
+// Tipo enriquecido que devuelve la cita con datos del paciente
+export interface CitaConPaciente extends Cita {
+  paciente: Paciente;
+}
