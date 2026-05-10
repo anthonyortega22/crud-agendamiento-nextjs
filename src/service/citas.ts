@@ -22,11 +22,9 @@ export const citasService = {
   },
 
   async create(data: CitaInput) {
-    // Regla de negocio: el paciente debe existir
     const paciente = pacientesRepository.findById(data.pacienteId);
     if (!paciente) throw new Error("El paciente no existe");
 
-    // Regla de negocio: sin conflictos de horario para el mismo paciente
     const citasDelPaciente = citasRepository.findByPaciente(data.pacienteId);
     const conflicto = citasDelPaciente.find(
       (c) => c.fecha === data.fecha && c.hora === data.hora,
@@ -34,9 +32,8 @@ export const citasService = {
     if (conflicto)
       throw new Error("El paciente ya tiene una cita en ese horario");
 
-    return citasRepository.create(data);
+    return citasRepository.create({ ...data, estado: "pendiente" });
   },
-
   async update(id: string, data: Partial<CitaInput>) {
     const cita = await citasService.getById(id);
 

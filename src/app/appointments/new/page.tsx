@@ -1,15 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface Paciente { id: string; nombre: string; apellido: string }
 
 export default function NuevaCitaPage() {
   const router = useRouter()
   const [pacientes, setPacientes] = useState<Paciente[]>([])
-  const [form, setForm] = useState({ pacienteId: '', fecha: '', hora: '', motivo: '', estado: 'pendiente' })
+  const [form, setForm] = useState({ pacienteId: '', fecha: '', hora: '', motivo: '' })
   const [error, setError] = useState('')
   const [guardando, setGuardando] = useState(false)
 
@@ -91,15 +91,6 @@ export default function NuevaCitaPage() {
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Motivo</label>
               <input name="motivo" value={form.motivo} placeholder="Consulta general, control..." onChange={handleChange} required
                 className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Estado</label>
-              <select name="estado" value={form.estado} onChange={handleChange}
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                <option value="pendiente">Pendiente</option>
-                <option value="confirmada">Confirmada</option>
-                <option value="cancelada">Cancelada</option>
-              </select>
             </div>
             <div className="flex gap-3 pt-2">
               <button type="submit" disabled={guardando || pacientes.length === 0}
