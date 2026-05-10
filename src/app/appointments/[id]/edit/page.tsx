@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter, useParams } from 'next/navigation'
-import Link from 'next/link'
+import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface Paciente { id: string; nombre: string; apellido: string }
 
@@ -13,6 +13,7 @@ export default function EditarCitaPage() {
   const [form, setForm] = useState({ pacienteId: '', fecha: '', hora: '', motivo: '', estado: 'pendiente' })
   const [error, setError] = useState('')
   const [guardando, setGuardando] = useState(false)
+  const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
     const cargar = async () => {
@@ -24,6 +25,7 @@ export default function EditarCitaPage() {
       const listaPacientes = await resPacientes.json()
       setForm({ pacienteId: cita.pacienteId, fecha: cita.fecha, hora: cita.hora, motivo: cita.motivo, estado: cita.estado })
       setPacientes(listaPacientes)
+      setCargando(false)
     }
     if (id) cargar()
   }, [id])
@@ -50,6 +52,20 @@ export default function EditarCitaPage() {
     router.push('/appointments')
   }
 
+  if (cargando) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex items-center gap-2 text-slate-400">
+          <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+          Cargando...
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
       <nav className="bg-white border-b border-slate-200 px-6 py-4">
@@ -70,7 +86,7 @@ export default function EditarCitaPage() {
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Paciente</label>
               <select name="pacienteId" value={form.pacienteId} onChange={handleChange} required
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                 <option value="" disabled>Selecciona un paciente</option>
                 {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre} {p.apellido}</option>)}
               </select>
@@ -79,23 +95,23 @@ export default function EditarCitaPage() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Fecha</label>
                 <input name="fecha" type="date" value={form.fecha} onChange={handleChange} required
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Hora</label>
                 <input name="hora" type="time" value={form.hora} onChange={handleChange} required
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Motivo</label>
               <input name="motivo" value={form.motivo} onChange={handleChange} required
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Estado</label>
               <select name="estado" value={form.estado} onChange={handleChange}
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                 <option value="pendiente">Pendiente</option>
                 <option value="confirmada">Confirmada</option>
                 <option value="cancelada">Cancelada</option>

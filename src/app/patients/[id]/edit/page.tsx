@@ -81,28 +81,28 @@ export default function EditarPacientePage() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Nombre</label>
                 <input name="nombre" value={form.nombre} onChange={handleChange} required
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
+                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Apellido</label>
                 <input name="apellido" value={form.apellido} onChange={handleChange} required
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
+                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
               <input name="email" type="email" value={form.email} onChange={handleChange} required
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
+                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Teléfono</label>
               <input name="telefono" value={form.telefono} onChange={handleChange} required
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
+                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Fecha de nacimiento</label>
               <input name="fechaNacimiento" type="date" value={form.fechaNacimiento} onChange={handleChange} required
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
+                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" />
             </div>
             <div className="flex gap-3 pt-2">
               <button type="submit" disabled={guardando}
