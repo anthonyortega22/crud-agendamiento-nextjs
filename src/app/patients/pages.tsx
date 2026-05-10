@@ -14,7 +14,11 @@ export default function PacientesPage() {
     }
 
     useEffect(() => {
-        cargar()
+        (async () => {
+            const res = await fetch('/api/pacientes')
+            const data = await res.json()
+            setPacientes(data)
+        })()
     }, [])
 
     const eliminar = async (id: string) => {
