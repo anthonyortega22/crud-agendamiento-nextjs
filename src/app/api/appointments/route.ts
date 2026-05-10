@@ -1,0 +1,22 @@
+import { citasService } from '@/app/service/citas'
+
+export async function GET() {
+  try {
+    const pacientes = await citasService.getAll()
+    return Response.json(pacientes)
+  } catch (e) {
+    const mensaje = e instanceof Error ? e.message : 'Error desconocido'
+    return Response.json({ error: mensaje }, { status: 500 })
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json()
+    const paciente = await citasService.create(body)
+    return Response.json(paciente, { status: 201 })
+  } catch (e) {
+    const mensaje = e instanceof Error ? e.message : 'Error desconocido'
+    return Response.json({ error: mensaje }, { status: 400 })
+  }
+}
