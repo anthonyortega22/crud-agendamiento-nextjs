@@ -1,13 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 
 interface Paciente { id: string; nombre: string; apellido: string }
 
-export default function NuevaCitaPage() {
+export default function EditarCitaPage() {
   const router = useRouter()
+  const { id } = useParams()
   const [pacientes, setPacientes] = useState<Paciente[]>([])
   const [form, setForm] = useState({ pacienteId: '', fecha: '', hora: '', motivo: '', estado: 'pendiente' })
   const [error, setError] = useState('')
@@ -15,13 +16,17 @@ export default function NuevaCitaPage() {
 
   useEffect(() => {
     const cargar = async () => {
-      const res = await fetch('/api/patients')
-      const data = await res.json()
-      setPacientes(data)
-      if (data.length > 0) setForm(prev => ({ ...prev, pacienteId: data[0].id }))
+      const [resCita, resPacientes] = await Promise.all([
+        fetch(`/api/appointments/${id}`),
+        fetch('/api/patients'),
+      ])
+      const cita = await resCita.json()
+      const listaPacientes = await resPacientes.json()
+      setForm({ pacienteId: cita.pacienteId, fecha: cita.fecha, hora: cita.hora, motivo: cita.motivo, estado: cita.estado })
+      setPacientes(listaPacientes)
     }
-    cargar()
-  }, [])
+    if (id) cargar()
+  }, [id])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -31,8 +36,8 @@ export default function NuevaCitaPage() {
     e.preventDefault()
     setGuardando(true)
     setError('')
-    const res = await fetch('/api/appointments', {
-      method: 'POST',
+    const res = await fetch(`/api/appointments/${id}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     })
@@ -54,7 +59,7 @@ export default function NuevaCitaPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
           </Link>
-          <h1 className="text-lg font-semibold text-slate-800">Nueva cita</h1>
+          <h1 className="text-lg font-semibold text-slate-800">Editar cita</h1>
         </div>
       </nav>
 
@@ -69,11 +74,6 @@ export default function NuevaCitaPage() {
                 <option value="" disabled>Selecciona un paciente</option>
                 {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre} {p.apellido}</option>)}
               </select>
-              {pacientes.length === 0 && (
-                <p className="mt-1.5 text-xs text-amber-600">
-                  No hay pacientes. <Link href="/patients/new" className="underline">Agrega uno primero.</Link>
-                </p>
-              )}
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -89,8 +89,8 @@ export default function NuevaCitaPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Motivo</label>
-              <input name="motivo" value={form.motivo} placeholder="Consulta general, control..." onChange={handleChange} required
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+              <input name="motivo" value={form.motivo} onChange={handleChange} required
+                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Estado</label>
@@ -102,9 +102,9 @@ export default function NuevaCitaPage() {
               </select>
             </div>
             <div className="flex gap-3 pt-2">
-              <button type="submit" disabled={guardando || pacientes.length === 0}
+              <button type="submit" disabled={guardando}
                 className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white rounded-xl px-4 py-2.5 text-sm font-medium transition-colors">
-                {guardando ? 'Guardando...' : 'Agendar cita'}
+                {guardando ? 'Guardando...' : 'Guardar cambios'}
               </button>
               <Link href="/appointments" className="flex-1 text-center border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors">
                 Cancelar
