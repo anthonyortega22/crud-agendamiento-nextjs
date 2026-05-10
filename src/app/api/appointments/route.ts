@@ -1,11 +1,11 @@
-import { citasService } from '@/app/service/citas'
+import { citasService } from "@/app/service/citas"
 
 export async function GET() {
   try {
-    const pacientes = await citasService.getAll()
-    return Response.json(pacientes)
+    const citas = await citasService.getAll()
+    return Response.json(citas)
   } catch (e) {
-    const mensaje = e instanceof Error ? e.message : 'Error desconocido'
+    const mensaje = e instanceof Error ? e.message : "Error desconocido"
     return Response.json({ error: mensaje }, { status: 500 })
   }
 }
@@ -13,10 +13,10 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const paciente = await citasService.create(body)
-    return Response.json(paciente, { status: 201 })
+    const cita = await citasService.create(body)
+    return Response.json(cita, { status: 201 })
   } catch (e) {
-    const mensaje = e instanceof Error ? e.message : 'Error desconocido'
+    const mensaje = e instanceof Error ? e.message : "Error desconocido"
     return Response.json({ error: mensaje }, { status: 400 })
   }
 }

@@ -1,55 +1,43 @@
 import { prisma } from "../lib/prisma"
-import { CitaInput } from "../types";
+import { CitaInput } from "../types"
 
 export const citasRepository = {
+  findAll() {
+    return prisma.cita.findMany({ include: { paciente: true } })
+  },
 
-    findAll() {
-        return prisma.cita.findMany({ include: { paciente: true } })
-    },
+  findById(id: string) {
+    return prisma.cita.findUnique({
+      where: { id },
+      include: { paciente: true },
+    })
+  },
 
-    findById(id: string) {
-        return prisma.cita.findUnique({
-            where: {
-                id
-            },
-            include: { paciente: true }
-        })
-    },
+  findByPaciente(pacienteId: string) {
+    return prisma.cita.findMany({
+      where: { pacienteId },
+      include: { paciente: true },
+    })
+  },
 
-    findByPaciente(PacienteId: string) {
-        return prisma.cita.findMany({
-            where: {
-                pacienteId: PacienteId
-            },
-            include: { paciente: true }
-        })
-    },
+  create(data: CitaInput) {
+    return prisma.cita.create({ data })
+  },
 
-    create(data: CitaInput) {
-        return prisma.cita.create({
-            data
-        })
-    },
+  update(id: string, data: Partial<CitaInput>) {
+    return prisma.cita.update({
+      where: { id },
+      data: {
+        ...(data.fecha      !== undefined && { fecha:      data.fecha }),
+        ...(data.hora       !== undefined && { hora:       data.hora }),
+        ...(data.motivo     !== undefined && { motivo:     data.motivo }),
+        ...(data.estado     !== undefined && { estado:     data.estado }),
+        ...(data.pacienteId !== undefined && { pacienteId: data.pacienteId }),
+      },
+    })
+  },
 
-    update(id: string, data: Omit<Partial<CitaInput>, 'id'>) {
-        return prisma.cita.update({
-            where: { id },
-            data: {
-                ...(data.fecha && { fecha: data.fecha }),
-                ...(data.hora && { hora: data.hora }),
-                ...(data.motivo && { motivo: data.motivo }),
-                ...(data.estado && { estado: data.estado }),
-                ...(data.pacienteId && { pacienteId: data.pacienteId }),
-            },
-        })
-    },
-
-    delete(id: string) {
-        return prisma.cita.delete({
-            where: { id }
-        })
-    },
-
-
-
+  delete(id: string) {
+    return prisma.cita.delete({ where: { id } })
+  },
 }

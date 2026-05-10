@@ -1,41 +1,44 @@
-import { citasService } from '@/app/service/citas'
+import { citasService } from "@/app/service/citas"
 
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const paciente = await citasService.getById(params.id)
-    return Response.json(paciente)
+    const { id } = await params
+    const cita = await citasService.getById(id)
+    return Response.json(cita)
   } catch (e) {
-    const mensaje = e instanceof Error ? e.message : 'Error desconocido'
-    return Response.json({ error: mensaje}, { status: 404 })
+    const mensaje = e instanceof Error ? e.message : "Error desconocido"
+    return Response.json({ error: mensaje }, { status: 404 })
   }
 }
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await req.json()
-    const paciente = await citasService.update(params.id, body)
-    return Response.json(paciente)
+    const cita = await citasService.update(id, body)
+    return Response.json(cita)
   } catch (e) {
-    const mensaje = e instanceof Error ? e.message : 'Error desconocido'
+    const mensaje = e instanceof Error ? e.message : "Error desconocido"
     return Response.json({ error: mensaje }, { status: 400 })
   }
 }
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await citasService.delete(params.id)
+    const { id } = await params
+    await citasService.delete(id)
     return Response.json({ ok: true })
   } catch (e) {
-    const mensaje = e instanceof Error ? e.message: 'Error desconocido'
+    const mensaje = e instanceof Error ? e.message : "Error desconocido"
     return Response.json({ error: mensaje }, { status: 404 })
   }
 }
