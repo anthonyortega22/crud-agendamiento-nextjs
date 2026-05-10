@@ -1,6 +1,6 @@
 import { citasRepository } from '../repositories/citas'
 import { pacientesRepository } from '../repositories/pacientes'
-import { CitaInput } from '../types'
+import { CitaInput, Cita } from '../types'
 
 
 export const citasService = {
@@ -20,7 +20,7 @@ export const citasService = {
 
         const citas = await citasRepository.findByPaciente(data.pacienteId)
         const conflicto = citas.find(
-            (c: CitaPrisma) => c.fecha === data.fecha && c.hora === data.hora
+            (c: Cita) => c.fecha === data.fecha && c.hora === data.hora
         )
         if (conflicto) throw new Error('El paciente ya tiene una cita en ese horario')
 
@@ -35,7 +35,7 @@ export const citasService = {
             const cita = await citasService.getById(id)
             const citas = await citasRepository.findByPaciente(cita.pacienteId)
             const conflicto = citas.find(
-                c => c.id !== id && c.fecha === data.fecha && c.hora === data.hora
+                (c: Cita) => c.id !== id && c.fecha === data.fecha && c.hora === data.hora
             )
             if (conflicto) throw new Error('Ya existe una cita en ese horario')
         }
