@@ -1,7 +1,7 @@
 import { citasRepository } from '../repositories/citas'
 import { pacientesRepository } from '../repositories/pacientes'
 import { CitaInput } from '../types'
-import { Cita as CitaPrisma} from '@prisma/client'
+
 
 export const citasService = {
     async getAll() {

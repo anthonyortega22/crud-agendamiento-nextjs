@@ -10,4 +10,25 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Paciente {
+  id              String   @id @default(cuid())
+  nombre          String
+  apellido        String
+  email           String   @unique
+  telefono        String
+  fechaNacimiento String
+  citas           Cita[]
+}
+
+model Cita {
+  id         String   @id @default(cuid())
+  fecha      String
+  hora       String
+  motivo     String
+  estado     String   @default("pendiente")
+  pacienteId String
+  paciente   Paciente @relation(fields: [pacienteId], references: [id])
 }
