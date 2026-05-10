@@ -1,6 +1,6 @@
 'use client'
 
-import { Paciente } from '@/app/types'
+import { Paciente } from '@/types'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 

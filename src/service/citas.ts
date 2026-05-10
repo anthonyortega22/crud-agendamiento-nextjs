@@ -29,9 +29,10 @@ export const citasService = {
     // Regla de negocio: sin conflictos de horario para el mismo paciente
     const citasDelPaciente = citasRepository.findByPaciente(data.pacienteId);
     const conflicto = citasDelPaciente.find(
-      (c) => c.fecha === data.fecha && c.hora === data.hora
+      (c) => c.fecha === data.fecha && c.hora === data.hora,
     );
-    if (conflicto) throw new Error("El paciente ya tiene una cita en ese horario");
+    if (conflicto)
+      throw new Error("El paciente ya tiene una cita en ese horario");
 
     return citasRepository.create(data);
   },
@@ -43,7 +44,7 @@ export const citasService = {
     if (data.fecha && data.hora) {
       const citasDelPaciente = citasRepository.findByPaciente(cita.pacienteId);
       const conflicto = citasDelPaciente.find(
-        (c) => c.id !== id && c.fecha === data.fecha && c.hora === data.hora
+        (c) => c.id !== id && c.fecha === data.fecha && c.hora === data.hora,
       );
       if (conflicto) throw new Error("Ya existe una cita en ese horario");
     }

@@ -3,7 +3,7 @@
  * Maneja HTTP. Delega toda lógica al servicio.
  */
 
-import { pacientesService } from "@/app/service/paciente";
+import { pacientesService } from "@/service/paciente";
 
 export async function GET() {
   try {
